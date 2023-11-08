@@ -11,6 +11,7 @@ import {
   Title,
   Wrapper,
 } from '../components/AuthComponents';
+import GithubBtn from '../components/GithubBtn';
 
 interface ErrorMsg {
   [code: string]: string;
@@ -88,6 +89,7 @@ const Login = () => {
       <Switcher>
         계정이 없으신가요? <Link to='/create-account'>Create →</Link>
       </Switcher>
+      <GithubBtn />
     </Wrapper>
   );
 };
