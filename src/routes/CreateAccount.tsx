@@ -1,49 +1,28 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { FirebaseError } from 'firebase/app';
+import {
+  Error,
+  Form,
+  Input,
+  Switcher,
+  Title,
+  Wrapper,
+} from '../components/AuthComponents';
 
-const Wrapper = styled.div`
-  height: 100%;
-  width: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 0px;
-`;
+interface ErrorMsg {
+  [code: string]: string;
+}
 
-const Title = styled.h1`
-  font-size: 24px;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  box-sizing: border-box;
-  font-size: 16px;
-  &[type='submit'] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-
-const Error = styled.span`
-  font-weight: 600;
-  color: tomato;
-`;
+const errorMsg: ErrorMsg = {
+  'auth/email-already-in-use': '이미 사용 중인 이메일 입니다.',
+  'auth/invalid-email': '잘못된 이메일 형식입니다.',
+  'auth/weak-password': '비밀번호는 6글자 이상이어야 합니다.',
+  'auth/network-request-failed': '네트워크 연결에 실패 하였습니다.',
+  'auth/internal-error': '잘못된 요청입니다.',
+};
 
 const CreateAccount = () => {
   const navigate = useNavigate();
@@ -69,6 +48,8 @@ const CreateAccount = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setError('');
     if (loading || name === '' || email === '' || password === '') return;
     try {
       setLoading(true);
@@ -79,7 +60,6 @@ const CreateAccount = () => {
         email,
         password
       );
-      console.log(credentials.user);
 
       // 2. set the name of the user profile
       await updateProfile(credentials.user, {
@@ -90,6 +70,9 @@ const CreateAccount = () => {
       navigate('/');
     } catch (e) {
       // setError
+      if (e instanceof FirebaseError) {
+        setError(errorMsg[e.code]);
+      }
     } finally {
       setLoading(false);
     }
@@ -129,6 +112,9 @@ const CreateAccount = () => {
         />
       </Form>
       {error !== '' ? <Error>{error}</Error> : null}
+      <Switcher>
+        이미 계정이 있으신가요? <Link to='/login'>Login →</Link>
+      </Switcher>
     </Wrapper>
   );
 };
