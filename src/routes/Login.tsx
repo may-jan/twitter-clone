@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FirebaseError } from 'firebase/app';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { auth } from '../firebase';
 import {
   Error,
@@ -64,6 +67,12 @@ const Login = () => {
     }
   };
 
+  const onClick = async () => {
+    setError('');
+    await sendPasswordResetEmail(auth, email);
+    setError('이메일을 확인하세요');
+  };
+
   return (
     <Wrapper>
       <Title>Log into 🕊️</Title>
@@ -86,7 +95,13 @@ const Login = () => {
         />
         <Input type='submit' value={loading ? 'loading...' : 'Login'} />
       </Form>
-      {error !== '' ? <Error>{error}</Error> : null}
+      {error !== '' ? (
+        <>
+          <Error>{error}</Error>{' '}
+          <Switcher onClick={onClick}>비밀번호 변경하기</Switcher>
+        </>
+      ) : null}
+
       <Switcher>
         계정이 없으신가요? <Link to='/create-account'>Create →</Link>
       </Switcher>
