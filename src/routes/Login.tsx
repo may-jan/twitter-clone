@@ -64,7 +64,6 @@ const Login = () => {
     }
   };
 
-  console.log(location.origin);
   return (
     <Wrapper>
       <Title>Log into 🕊️</Title>
