@@ -12,6 +12,7 @@ import {
   Wrapper,
 } from '../components/AuthComponents';
 import GithubBtn from '../components/GithubBtn';
+import GoogleBtn from '../components/GoogleBtn';
 
 interface ErrorMsg {
   [code: string]: string;
@@ -63,6 +64,7 @@ const Login = () => {
     }
   };
 
+  console.log(location.origin);
   return (
     <Wrapper>
       <Title>Log into 🕊️</Title>
@@ -90,6 +92,7 @@ const Login = () => {
         계정이 없으신가요? <Link to='/create-account'>Create →</Link>
       </Switcher>
       <GithubBtn />
+      <GoogleBtn />
     </Wrapper>
   );
 };
