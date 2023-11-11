@@ -10,6 +10,7 @@ const Form = styled.form`
 const TextArea = styled.textarea`
   border: 2px solid #fff;
   padding: 20px;
+  box-sizing: border-box;
   border-radius: 20px;
   font-size: 16px;
   color: #fff;
