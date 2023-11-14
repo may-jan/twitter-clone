@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ITweet } from './TimeLine';
 import { auth, db, storage } from '../firebase';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
 
 const Wrapper = styled.div`
@@ -46,6 +46,18 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+const EditButton = styled.button`
+  background-color: #555;
+  color: #fff;
+  border: 0;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
 const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
   const user = auth.currentUser;
   const onDelete = async () => {
@@ -67,13 +79,29 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
     }
   };
 
+  const onEdit = async () => {
+    if (user?.uid !== userId) return;
+    try {
+      const editTweet = prompt('수정하실 내용을 입력하세요', tweet);
+      // setDoc : 수정한 내용 반영하기 (https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko#set_a_document)
+      setDoc(doc(db, 'tweets', id), { tweet: editTweet }, { merge: true });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      //
+    }
+  };
+
   return (
     <Wrapper>
       <Column>
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
         {user?.uid === userId ? (
-          <DeleteButton onClick={onDelete}>Delete</DeleteButton>
+          <>
+            <DeleteButton onClick={onDelete}>Delete</DeleteButton>{' '}
+            <EditButton onClick={onEdit}>Edit</EditButton>
+          </>
         ) : null}
       </Column>
       <Column>{photo ? <Photo src={photo} /> : null}</Column>
@@ -82,3 +110,5 @@ const Tweet = ({ username, photo, tweet, userId, id }: ITweet) => {
 };
 
 export default Tweet;
+
+// Code Challenge : Edit 기능 만들기
