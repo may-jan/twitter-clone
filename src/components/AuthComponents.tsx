@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 24px;
+  font-size: 42px;
 `;
 
 export const Form = styled.form`
@@ -27,10 +27,11 @@ export const Input = styled.input`
   padding: 10px 20px;
   border-radius: 50px;
   border: none;
-  box-sizing: border-box;
   font-size: 16px;
   &[type='submit'] {
     cursor: pointer;
+    background-color: #1d9bf0;
+    color: #fff;
     &:hover {
       opacity: 0.8;
     }
