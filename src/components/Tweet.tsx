@@ -7,7 +7,6 @@ const Wrapper = styled.div`
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 15px;
-  margin-bottom: 20px;
 `;
 
 const Column = styled.div``;
@@ -35,11 +34,7 @@ const Tweet = ({ username, photo, tweet }: ITweet) => {
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
       </Column>
-      {photo ? (
-        <Column>
-          <Photo src={photo} />
-        </Column>
-      ) : null}
+      <Column>{photo ? <Photo src={photo} /> : null}</Column>
     </Wrapper>
   );
 };
