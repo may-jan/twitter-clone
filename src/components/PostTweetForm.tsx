@@ -13,7 +13,6 @@ const Form = styled.form`
 const TextArea = styled.textarea`
   border: 2px solid #fff;
   padding: 20px;
-  box-sizing: border-box;
   border-radius: 20px;
   font-size: 16px;
   color: #fff;
@@ -24,8 +23,6 @@ const TextArea = styled.textarea`
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
   &::placeholder {
-    background-color: #000;
-    color: #fff;
     font-size: 16px;
   }
   &:focus {
@@ -97,10 +94,7 @@ const PostTweetForm = () => {
       // 업로드한 파일이 있는 경우
       if (file) {
         // Cloud Storage 루트 지정
-        const locationRef = ref(
-          storage,
-          `tweets/${user.uid}-${user.displayName}/${doc.id}`
-        );
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         // Firebase에 업로드 (https://firebase.google.com/docs/storage/web/upload-files?hl=ko#upload_files)
         const result = await uploadBytes(locationRef, file);
         // 파일의 다운로드 URL 정보 가져오기 (https://firebase.google.com/docs/storage/web/download-files?hl=ko#download_data_via_url)
