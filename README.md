@@ -9,7 +9,7 @@
   
   
 ## 배포링크
-https://twitter-clone-ecfec.web.app/
+https://twitter-clone-e6138.web.app
 
 <br>
 <br>
